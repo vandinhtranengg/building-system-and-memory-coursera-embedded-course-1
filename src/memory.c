@@ -26,25 +26,70 @@
  Function Definitions
 ***********************************************************/
 void set_value(char * ptr, unsigned int index, char value){
-  ptr[index] = value;
+	ptr[index] = value;
 }
 
 void clear_value(char * ptr, unsigned int index){
-  set_value(ptr, index, 0);
+	set_value(ptr, index, 0);
 }
 
 char get_value(char * ptr, unsigned int index){
-  return ptr[index];
+	return ptr[index];
 }
 
 void set_all(char * ptr, char value, unsigned int size){
-  unsigned int i;
-  for(i = 0; i < size; i++) {
-    set_value(ptr, i, value);
+	unsigned int i;
+	for(i = 0; i < size; i++) {
+		set_value(ptr, i, value);
   }
 }
 
 void clear_all(char * ptr, unsigned int size){
-  set_all(ptr, 0, size);
+	set_all(ptr, 0, size);
 }
 
+uint8_t * my_memmove(uint8_t * src, uint8_t * dst, size_t length){
+	unsigned int index;
+	if(dst - src >= length || src > des){
+		for(index = 0; index < length; index++){
+			*(dst + index) = *(src + index);
+		}
+	}
+	else{ // overlap case (dst - src < length)
+		for(index = length - 1; index >=0; index--)
+			*(dst + index) = *(src + index);
+	}
+	return dst;
+}
+
+uint8_t * my_memcopy(uint8_t * src, uint8_t * dst, size_t length){
+	unsigned int index;
+	for(index = 0; index < length; index++){
+		*(dst + index) = *(src + index);
+	}
+    return dst;
+}
+
+uint8_t * my_memset(uint8_t * src, size_t length, uint8_t value){
+	unsigned int index;
+	for(index = 0; index < length; index++){
+		*(src + index) = value;
+	}
+	return src;
+}
+
+uint8_t * my_memzero(uint8_t * src, size_t length){
+	my_memset(src, length, 0);
+	return src;
+}
+
+uint8_t * my_reverse(uint8_t * src, size_t length){
+	unsigned int index;
+	uint8_t temp;
+	for(index = 0;index < length/2; index++){
+		temp = *(src + index);
+		*(src + index) = *(src + length - 1 - index);
+		*(src + length - 1 - index) = temp;
+	}
+	return src;
+}
