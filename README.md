@@ -1,2 +1,2 @@
-# Simple Build System and Memory Manipulation Practice Project 
-(coursera embedded course module1 final assessment)
+# Build System and Memory Manipulation - Simple Embedded Practice Project 
+(Coursera embedded course module1 final assessment)
