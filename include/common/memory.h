@@ -23,7 +23,7 @@
 #define __MEMORY_H__
 
 #include <stdint.h>
-
+#include <stdlib.h>
 
 /**
  * @brief Sets a value of a data array 
