@@ -10,24 +10,29 @@
 #*****************************************************************************
 
 #Platform Override:
-PLATFORM = HOST
 
 
 #Source and Include file's Selection based on the Target Platfrom
-ifeq ($(PLATFORM),HOST)
-	SOURCES = 	main.c	\
-			memory.c
+SOURCES :=	src/main.c		\
+			src/memory.c	\
+			src/stats.c		\
+			src/data.c
 
-	INCLUDES =	-I../include/common
+INCLUDES :=	-I include/common
 
-else ifeq ($(PLATFORM),MSP432)
-	SOURCES = 	main.c				\
-			memory.c			\
-			interrupts_msp432p401r_gcc.c	\
-			startup_msp432p401r_gcc.c	\
-			system_msp432p401r.c
+ifneq ($(COURSE1),)
+	SOURCES +=	\
+				src/course1.c
 
-	INCLUDES =	-I../include/common	\
-			-I../include/CMSIS	\
-			-I../include/msp432
+endif
+
+ifeq ($(PLATFORM),MSP432)
+	SOURCES +=	\
+				src/interrupts_msp432p401r_gcc.c\
+				src/startup_msp432p401r_gcc.c	\
+				src/system_msp432p401r.c
+
+	INCLUDES +=	\
+				-I include/CMSIS	\
+				-I include/msp432
 endif

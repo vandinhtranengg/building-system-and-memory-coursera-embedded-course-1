@@ -24,15 +24,17 @@
 include sources.mk
 
 # Platform Overrides
-PLATFORM = HOST
+PLATFORM ?= HOST
+TARGET ?= c1final
+VERBOSE ?=
+COURSE1 ?=
 
 # Compiler Flags and Defines
 OUTPUT = c1m2
 GFLAGS = -Wall -Werror -g -O0 -std=c99
 ifeq ($(PLATFORM), MSP432)
 	# Architectures Specific Flags
-	LINKER_FILE = ../msp432p401r.lds
-	TARGET = MSP432
+	LINKER_FILE = msp432p401r.lds
 	CPU = cortex-m4
 	ARCH = armv7e-m
 	FLOAT-ABI = hard
@@ -44,20 +46,18 @@ ifeq ($(PLATFORM), MSP432)
 	LD = arm-none-eabi-ld
 	OBJDUMP = arm-none-eabi-objdump
 	SIZE-UTL = arm-none-eabi-size
-      	CPPFLAGS = -D$(TARGET) $(INCLUDES)
+      	CPPFLAGS = -D$(PLATFORM) $(INCLUDES)
 	CFLAGS = $(GLAGS) -mcpu=$(CPU) -mthumb -march=$(ARCH) -mfloat-abi=$(FLOAT-ABI) -mfpu=$(FPU) --specs=$(SPECS)
 	LDFLAGS = -Wl,-Map=$(OUTPUT).map -T $(LINKER_FILE)
-
+	
 else ifeq ($(PLATFORM), HOST)
-	# Architectures Specific Flags
-	TARGET = HOST
 
         # Compile Defines
 	CC = gcc
 	LD = ld
 	OBJDUMP = x86_64-linux-gnu-objdump
 	SIZE-UTL = size
-	CPPFLAGS = -D$(TARGET) $(INCLUDES)
+	CPPFLAGS = -D$(PLATFORM) -DCOURSE1 -DVERBOSE $(INCLUDES)
 	CFLAGS = $(GFLAGS)
 	LDFLAGS = -Wl,-Map=$(OUTPUT).map
 endif	
