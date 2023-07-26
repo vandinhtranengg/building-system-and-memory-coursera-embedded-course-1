@@ -24,7 +24,7 @@
 
 
 #include "stats.h"
-#include "platform.h"
+
 /* Size of the Data Set */
 #define SIZE (40)
 
@@ -38,7 +38,6 @@ unsigned char test[SIZE] = {	34,	201,	190,	154,	8,	194,	2,	6,
 
 
 void print_statistic(unsigned char * ptr, unsigned int count){
-#ifdef VERBOSE
 	unsigned char median;
         unsigned char mean;
         unsigned char max;
@@ -56,18 +55,19 @@ void print_statistic(unsigned char * ptr, unsigned int count){
         min = find_minimum(ptr, count);
         PRINTF("The minimum is %d \n", min);
 
-#endif
-      	
 }
 
 
 void print_array(unsigned char * ptr, unsigned int count){
+#ifdef VERBOSE
 	unsigned int i;
 
 	for(i = 0; i < count; i++){
 		PRINTF("%d ", ptr[i]);
 		//ptr++;
 	}
+	PRINTF("\n");
+#endif
 }
 
 void sort_array(unsigned char * ptr, unsigned int count){
@@ -86,7 +86,6 @@ void sort_array(unsigned char * ptr, unsigned int count){
 }
 
 unsigned char find_median(unsigned char * ptr, unsigned int count){
-	unsigned int i;
 	unsigned char median;
 
 	sort_array(ptr, count);
