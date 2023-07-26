@@ -22,6 +22,7 @@
 #define __STATS_H__
 
 #include <stddef.h>
+#include <stdlib.h>
 #include "platform.h"
 
 
