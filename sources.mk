@@ -22,7 +22,7 @@ INCLUDES :=	-I include/common
 
 ifneq ($(COURSE1),)
 	SOURCES +=	\
-				src/course1.c
+		src/course1.c
 
 endif
 

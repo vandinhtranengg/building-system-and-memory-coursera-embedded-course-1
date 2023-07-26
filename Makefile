@@ -25,17 +25,28 @@ include sources.mk
 
 # Platform Overrides
 PLATFORM ?= HOST
-TARGET ?= c1final
-VERBOSE ?=
+TARGET ?= C1Final
 COURSE1 ?=
+VERBOSE ?=
 
 # Compiler Flags and Defines
-OUTPUT = c1m2
 GFLAGS = -Wall -Werror -g -O0 -std=c99
+CPPFLAGS = $(INCLUDES) -D$(PLATFORM)
+
+ifneq ($(VERBOSE),)
+	CPPFLAGS += -D$(VERBOSE)
+endif
+
+ifneq ($(COURSE1),)
+	CPPFLAGS += -D$(COURSE1)
+endif
+
+
 ifeq ($(PLATFORM), MSP432)
 	# Architectures Specific Flags
 	LINKER_FILE = msp432p401r.lds
 	CPU = cortex-m4
+	ISA = thumb
 	ARCH = armv7e-m
 	FLOAT-ABI = hard
 	FPU = fpv4-sp-d16
@@ -46,20 +57,19 @@ ifeq ($(PLATFORM), MSP432)
 	LD = arm-none-eabi-ld
 	OBJDUMP = arm-none-eabi-objdump
 	SIZE-UTL = arm-none-eabi-size
-      	CPPFLAGS = -D$(PLATFORM) $(INCLUDES)
-	CFLAGS = $(GLAGS) -mcpu=$(CPU) -mthumb -march=$(ARCH) -mfloat-abi=$(FLOAT-ABI) -mfpu=$(FPU) --specs=$(SPECS)
-	LDFLAGS = -Wl,-Map=$(OUTPUT).map -T $(LINKER_FILE)
+	CFLAGS = $(GFLAGS) -mcpu=$(CPU) -m$(ISA) -march=$(ARCH) -mfloat-abi=$(FLOAT-ABI) -mfpu=$(FPU) --specs=$(SPECS)
+	LDFLAGS = -Wl,-Map=$(TARGET).map -T $(LINKER_FILE)
 	
 else ifeq ($(PLATFORM), HOST)
 
         # Compile Defines
 	CC = gcc
 	LD = ld
-	OBJDUMP = x86_64-linux-gnu-objdump
+	#OBJDUMP = x86_64-linux-gnu-objdump
+	OBJDUMP = $(shell which objdump)
 	SIZE-UTL = size
-	CPPFLAGS = -D$(PLATFORM) -DCOURSE1 -DVERBOSE $(INCLUDES)
 	CFLAGS = $(GFLAGS)
-	LDFLAGS = -Wl,-Map=$(OUTPUT).map
+	LDFLAGS = -Wl,-Map=$(TARGET).map
 endif	
 
 #Dependency Files Generation
@@ -83,7 +93,7 @@ OBJS = $(SOURCES:.c=.o)
 %.asm : %.o
 	$(OBJDUMP) -S $< > $@
 
-$(OUTPUT).asm: $(OUTPUT).out
+$(TARGET).asm: $(TARGET).out
 	$(OBJDUMP) -S $< > $@
 
 .PHONY: compile-all
@@ -91,13 +101,13 @@ compile-all: $(OBJS)
 
 
 .PHONY: build
-build:$(OUTPUT).out
+build:$(TARGET).out
 
-$(OUTPUT).out:$(OBJS)
+$(TARGET).out:$(OBJS)
 	$(CC) $^ $(CFLAGS) $(LDFLAGS) -o $@
-	$(SIZE-UTL) *.o *.out
+	$(SIZE-UTL) src/*.o *.out
 
 
 .PHONY: clean
 clean:
-	rm -f *.d *.i *.s *.asm *.o $(OUTPUT).out $(OUTPUT).map
+	rm -f src/*.d src/*.i src/*.s src/*.asm src/*.o $(TARGET).out $(TARGET).map $(TARGET).asm
