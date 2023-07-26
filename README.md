@@ -4,13 +4,13 @@
 ## Using Makefile Example
 - For HOST machine(x86):
 ```bass 
-   	make all COURSE1=COURSE1 PLATFORM=HOST
+   	make build COURSE1=COURSE1 PLATFORM=HOST
 ```
 - For TI MSP432P401R:
 ```bass
-	make all COURSE1=COURSE1 PLATFORM=MSP432
+	make build COURSE1=COURSE1 PLATFORM=MSP432
 ``` 
 - With more verbosity: 
 ```bass
-	make all COURSE1=COURSE1 PLATFORM=MSP432 VERBOSE=VERBOSE
+	make build COURSE1=COURSE1 PLATFORM=MSP432 VERBOSE=VERBOSE
 ```
