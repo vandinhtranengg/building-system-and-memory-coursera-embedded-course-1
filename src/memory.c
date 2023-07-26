@@ -50,15 +50,16 @@ void clear_all(char * ptr, unsigned int size){
 }
 
 uint8_t * my_memmove(uint8_t * src, uint8_t * dst, size_t length){
-	unsigned int index;
-	if(dst - src >= length || src > des){
+ 	int index;
+	if(dst - src >= length || src > dst){
 		for(index = 0; index < length; index++){
 			*(dst + index) = *(src + index);
 		}
 	}
 	else{ // overlap case (dst - src < length)
-		for(index = length - 1; index >=0; index--)
+		for(index = length - 1; index >= 0; index--){
 			*(dst + index) = *(src + index);
+		}
 	}
 	return dst;
 }
@@ -101,7 +102,7 @@ int32_t * reserve_words(size_t length){
 	return ptr;	
 }
 
-void free_words(int32_t * src){
-	free((int32_t *) src); 
+void free_words(uint32_t * src){
+	free(src); 
 }	
 
