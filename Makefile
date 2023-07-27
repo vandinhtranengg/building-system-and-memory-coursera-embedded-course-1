@@ -96,6 +96,8 @@ OBJS = $(SOURCES:.c=.o)
 $(TARGET).asm: $(TARGET).out
 	$(OBJDUMP) -S $< > $@
 
+all: $(TARGET).out
+
 .PHONY: compile-all
 compile-all: $(OBJS) 	
 
